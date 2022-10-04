@@ -2,9 +2,11 @@ import cv2
 from pyzbar.pyzbar import decode
 import numpy as np
 from whatsapp_request import downloadMedia
+from item_register import register
 
 
 def process_image(message_body):
+    customer_id = message_body['customer']['customer_id']
     message  = message_body['message']
 
     raw = downloadMedia(message['image']['id']).content
@@ -14,5 +16,7 @@ def process_image(message_body):
     barcodes = decode(image)
   
     for barcode in barcodes:
-        print(f'barcode detected {barcode.data}')
+        print(f'registrando item {barcode.data} cid {customer_id}')
+        register(barcode.data,customer_id)
+
 
